@@ -1,9 +1,15 @@
 NAME = philo
 CC = @clang
-CFLAGS = -Wall -Wextra -Werror -g -fsanitize=address 
+SANITIZE_FLAG = -fsanitize=thread
+CFLAGS = -Wall -Wextra -Werror -g $(SANITIZE_FLAG)
 RM = @rm -rf
 
-FILES = 
+
+FILES = ph_atoll \
+		ph_initialize \
+		ph_process \
+		ph_utils \
+		philo \
 
 SRCS_DIR = ./src/
 SRCS = $(addprefix $(SRCS_DIR), $(addsuffix .c, $(FILES)))
@@ -15,11 +21,11 @@ $(OBJS_DIR)%.o: $(SRCS_DIR)%.c
 	@mkdir -p obj
 	$(CC) $(CFLAGS) -c -o $@ $<
 
-all: ../$(NAME)
+all: $(NAME)
 
 $(NAME): $(SRCS_DIR)philo.h $(OBJS)
 	$(CC) $(CFLAGS) -o $(NAME) $(OBJS)
-	@echo "push_swap compiled"
+	@echo "philo compiled"
 
 clean:
 	$(RM) $(NAME)
