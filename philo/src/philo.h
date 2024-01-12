@@ -6,7 +6,7 @@
 /*   By: mmakagon <mmakagon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 15:14:34 by mmakagon          #+#    #+#             */
-/*   Updated: 2024/01/12 15:05:51 by mmakagon         ###   ########.fr       */
+/*   Updated: 2024/01/12 15:36:13 by mmakagon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,9 +49,10 @@ typedef struct s_fork {
 
 typedef struct s_rules {
 	int				philos_total;
-	time_t			microsec_to_die;
-	time_t			microsec_to_eat;
-	time_t			microsec_to_sleep;
+	suseconds_t		microsec_to_die;
+	suseconds_t		microsec_to_eat;
+	suseconds_t		microsec_to_sleep;
+	struct timeval	mcsec_start;
 	int				times_must_eat;
 	int				philos_ate_enough;
 	bool			someone_died;
@@ -59,21 +60,20 @@ typedef struct s_rules {
 }				t_rules;
 
 typedef struct s_philsopher {
-	int			id;
-	int			state;
-	time_t		last_state_change;
-	t_fork		*left_fork;
-	t_fork		*right_fork;
-	pthread_t	thread;
-	t_rules		*rules;
-	int			times_ate;
+	int				id;
+	int				state;
+	struct timeval	last_state_change;
+	t_fork			*left_fork;
+	t_fork			*right_fork;
+	pthread_t		thread;
+	t_rules			*rules;
+	int				times_ate;
 }				t_philosopher;
 
 typedef struct s_data {
 	t_fork			forks[200];
 	t_philosopher	philos[200];
 	t_rules			rules;
-	time_t			mcsec_start;
 }					t_data;
 
 // initialize

@@ -6,7 +6,7 @@
 /*   By: mmakagon <mmakagon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 10:27:59 by mmakagon          #+#    #+#             */
-/*   Updated: 2024/01/12 15:06:38 by mmakagon         ###   ########.fr       */
+/*   Updated: 2024/01/12 15:40:11 by mmakagon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,9 +51,9 @@ void	ph_initialize_forks(t_data *data)
 void	ph_initialize_rules(char **argv, t_rules *rules)
 {
 	rules->philos_total = (int)ph_atoll(argv[1]);
-	rules->microsec_to_die = (time_t)ph_atoll(argv[2]) * 1000;
-	rules->microsec_to_eat = (time_t)ph_atoll(argv[3]) * 1000;
-	rules->microsec_to_sleep = (time_t)ph_atoll(argv[4]) * 1000;
+	rules->microsec_to_die = (suseconds_t)ph_atoll(argv[2]) * 1000;
+	rules->microsec_to_eat = (suseconds_t)ph_atoll(argv[3]) * 1000;
+	rules->microsec_to_sleep = (suseconds_t)ph_atoll(argv[4]) * 1000;
 	rules->times_must_eat = (int)ph_atoll(argv[5]);
 	if (rules->philos_total < 1 || rules->philos_total > 200
 		|| rules->microsec_to_die < 0
