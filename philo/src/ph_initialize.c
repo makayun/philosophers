@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ph_initialize.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmakagon <mmakagon@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maxmakagonov <maxmakagonov@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 10:27:59 by mmakagon          #+#    #+#             */
-/*   Updated: 2024/01/12 15:40:11 by mmakagon         ###   ########.fr       */
+/*   Updated: 2024/01/15 18:18:53 by maxmakagono      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,13 @@ void	ph_initialize_philos(t_data *data)
 	{
 		data->philos[i].id = i;
 		data->philos[i].state = THINKING;
-		data->philos[i].last_state_change = 0;
+		data->philos[i].last_state_change.tv_sec = 0;
+		data->philos[i].last_state_change.tv_usec = 0;
 		data->philos[i].left_fork = &data->forks[i];
 		data->philos[i].right_fork = &data->forks[(i + 1) % total];
 		data->philos[i].times_ate = 0;
-		data->philos[i].rules = &data->rules;
+		data->philos[i].rules = data->rules;
+		data->philos[i].common_data = &data->common_data;
 		if(pthread_create(&data->philos[i].thread, NULL,
 			ph_process, (void *)&data->philos[i]))
 			ph_exit(ERR_PHILOS_INIT_FAILED, data);
@@ -48,27 +50,27 @@ void	ph_initialize_forks(t_data *data)
 	}
 }
 
-void	ph_initialize_rules(char **argv, t_rules *rules)
+void	ph_initialize_rules(char **argv, t_data *data)
 {
-	rules->philos_total = (int)ph_atoll(argv[1]);
-	rules->microsec_to_die = (suseconds_t)ph_atoll(argv[2]) * 1000;
-	rules->microsec_to_eat = (suseconds_t)ph_atoll(argv[3]) * 1000;
-	rules->microsec_to_sleep = (suseconds_t)ph_atoll(argv[4]) * 1000;
-	rules->times_must_eat = (int)ph_atoll(argv[5]);
-	if (rules->philos_total < 1 || rules->philos_total > 200
-		|| rules->microsec_to_die < 0
-		|| rules->microsec_to_eat < 0
-		|| rules->microsec_to_sleep < 0)
+	data->rules.philos_total = (int)ph_atoll(argv[1]);
+	data->rules.microsec_to_die = (suseconds_t)ph_atoll(argv[2]) * 1000;
+	data->rules.microsec_to_eat = (suseconds_t)ph_atoll(argv[3]) * 1000;
+	data->rules.microsec_to_sleep = (suseconds_t)ph_atoll(argv[4]) * 1000;
+	data->rules.times_must_eat = (int)ph_atoll(argv[5]);
+	if (data->rules.philos_total < 1 || data->rules.philos_total > 200
+		|| data->rules.microsec_to_die < 0
+		|| data->rules.microsec_to_eat < 0
+		|| data->rules.microsec_to_sleep < 0)
 		ph_exit(ERR_WRONG_INPUT, NULL);
-	rules->philos_ate_enough = 0;
-	rules->someone_died = false;
-	if (pthread_mutex_init(&rules->state_change, NULL))
+	data->common_data.philos_ate_enough = 0;
+	data->common_data.someone_died = false;
+	if (pthread_mutex_init(&data->common_data.state_change, NULL))
 		ph_exit(ERROR, NULL);
 }
 
 void	ph_initialize(char **argv, t_data *data)
 {
-	ph_initialize_rules(argv, &data->rules);
+	ph_initialize_rules(argv, data);
 	ph_initialize_forks(data);
 	ph_initialize_philos(data);
 }

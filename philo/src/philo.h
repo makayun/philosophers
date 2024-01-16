@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmakagon <mmakagon@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maxmakagonov <maxmakagonov@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 15:14:34 by mmakagon          #+#    #+#             */
-/*   Updated: 2024/01/12 15:36:13 by mmakagon         ###   ########.fr       */
+/*   Updated: 2024/01/15 18:38:26 by maxmakagono      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@
 # include <sys/time.h>
 # include <pthread.h>
 # include <stdbool.h>
+# include <limits.h>
 
 typedef struct s_fork {
 	int				id;
@@ -54,10 +55,13 @@ typedef struct s_rules {
 	suseconds_t		microsec_to_sleep;
 	struct timeval	mcsec_start;
 	int				times_must_eat;
+}				t_rules;
+
+typedef struct s_common {
+	pthread_mutex_t	state_change;
 	int				philos_ate_enough;
 	bool			someone_died;
-	pthread_mutex_t	state_change;
-}				t_rules;
+}				t_common;
 
 typedef struct s_philsopher {
 	int				id;
@@ -66,7 +70,8 @@ typedef struct s_philsopher {
 	t_fork			*left_fork;
 	t_fork			*right_fork;
 	pthread_t		thread;
-	t_rules			*rules;
+	t_rules			rules;
+	t_common		*common_data;
 	int				times_ate;
 }				t_philosopher;
 
@@ -74,6 +79,7 @@ typedef struct s_data {
 	t_fork			forks[200];
 	t_philosopher	philos[200];
 	t_rules			rules;
+	t_common		common_data;
 }					t_data;
 
 // initialize

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ph_atoll.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmakagon <mmakagon@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maxmakagonov <maxmakagonov@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 10:47:15 by mmakagon          #+#    #+#             */
-/*   Updated: 2024/01/12 15:06:02 by mmakagon         ###   ########.fr       */
+/*   Updated: 2024/01/15 18:44:49 by maxmakagono      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ long long	ph_atoll(const char *str)
 	minus = 0;
 	res = 0;
 	if (!str)
-		return (0);
+		return (INT_MAX);
 	while (is_space(str[i]) && str[i] != '\0')
 		i++;
 	if (str[i] == '-')
@@ -55,3 +55,5 @@ long long	ph_atoll(const char *str)
 		res = res * -1;
 	return (res);
 }
+
+// DON'T USE IT AS NORMAL ATOLL, LOOK AT THE LINES 41-42
