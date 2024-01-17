@@ -3,18 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   ph_utils.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmakagon <mmakagon@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maxmakagonov <maxmakagonov@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 10:37:14 by mmakagon          #+#    #+#             */
-/*   Updated: 2024/01/12 15:03:39 by mmakagon         ###   ########.fr       */
+/*   Updated: 2024/01/16 13:00:26 by maxmakagono      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-time_t	mcsec_to_mlsec(time_t input)
+long long ph_timeval_to_mcsec(struct timeval t)
 {
-	return (input / 1000);
+	return (t.tv_sec * 1000000 + t.tv_usec);
+}
+
+void ph_get_current_mcsec(long long *mcsec_current)
+{
+	struct timeval tv;
+
+	gettimeofday(&tv, NULL);
+	*mcsec_current = ph_timeval_to_mcsec(tv);
 }
 
 void	ph_exit(int code, t_data *data)

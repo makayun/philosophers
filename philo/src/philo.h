@@ -6,7 +6,7 @@
 /*   By: maxmakagonov <maxmakagonov@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 15:14:34 by mmakagon          #+#    #+#             */
-/*   Updated: 2024/01/15 18:38:26 by maxmakagono      ###   ########.fr       */
+/*   Updated: 2024/01/16 14:47:58 by maxmakagono      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,10 +50,10 @@ typedef struct s_fork {
 
 typedef struct s_rules {
 	int				philos_total;
-	suseconds_t		microsec_to_die;
-	suseconds_t		microsec_to_eat;
-	suseconds_t		microsec_to_sleep;
-	struct timeval	mcsec_start;
+	long long		mcsec_to_die;
+	long long		mcsec_to_eat;
+	long long		mcsec_to_sleep;
+	long long		mcsec_start;
 	int				times_must_eat;
 }				t_rules;
 
@@ -66,13 +66,13 @@ typedef struct s_common {
 typedef struct s_philsopher {
 	int				id;
 	int				state;
-	struct timeval	last_state_change;
+	int				times_ate;
+	long long		last_meal;
 	t_fork			*left_fork;
 	t_fork			*right_fork;
-	pthread_t		thread;
 	t_rules			rules;
 	t_common		*common_data;
-	int				times_ate;
+	pthread_t		thread;
 }				t_philosopher;
 
 typedef struct s_data {
@@ -92,7 +92,8 @@ void		*ph_process(void *arg);
 long long	ph_atoll(const char *str);
 
 // utils
-time_t		mcsec_to_mlsec(time_t input);
+void		ph_get_current_mcsec(long long *mcsec_current);
+long long 	ph_timeval_to_mcsec(struct timeval t);
 void		ph_exit(int code, t_data *data);
 
 #endif

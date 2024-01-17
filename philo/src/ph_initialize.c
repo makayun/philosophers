@@ -6,7 +6,7 @@
 /*   By: maxmakagonov <maxmakagonov@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 10:27:59 by mmakagon          #+#    #+#             */
-/*   Updated: 2024/01/15 18:18:53 by maxmakagono      ###   ########.fr       */
+/*   Updated: 2024/01/16 14:49:08 by maxmakagono      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,12 @@ void	ph_initialize_philos(t_data *data)
 
 	i = data->rules.philos_total;
 	total = data->rules.philos_total;
+	ph_get_current_mcsec(&data->rules.mcsec_start);
 	while (--i >= 0)
 	{
 		data->philos[i].id = i;
 		data->philos[i].state = THINKING;
-		data->philos[i].last_state_change.tv_sec = 0;
-		data->philos[i].last_state_change.tv_usec = 0;
+		data->philos[i].last_meal = data->rules.mcsec_start;
 		data->philos[i].left_fork = &data->forks[i];
 		data->philos[i].right_fork = &data->forks[(i + 1) % total];
 		data->philos[i].times_ate = 0;
@@ -52,15 +52,15 @@ void	ph_initialize_forks(t_data *data)
 
 void	ph_initialize_rules(char **argv, t_data *data)
 {
-	data->rules.philos_total = (int)ph_atoll(argv[1]);
-	data->rules.microsec_to_die = (suseconds_t)ph_atoll(argv[2]) * 1000;
-	data->rules.microsec_to_eat = (suseconds_t)ph_atoll(argv[3]) * 1000;
-	data->rules.microsec_to_sleep = (suseconds_t)ph_atoll(argv[4]) * 1000;
+	data->rules.philos_total = ph_atoll(argv[1]);
+	data->rules.mcsec_to_die = ph_atoll(argv[2]) * 1000;
+	data->rules.mcsec_to_eat = ph_atoll(argv[3]) * 1000;
+	data->rules.mcsec_to_sleep = ph_atoll(argv[4]) * 1000;
 	data->rules.times_must_eat = (int)ph_atoll(argv[5]);
 	if (data->rules.philos_total < 1 || data->rules.philos_total > 200
-		|| data->rules.microsec_to_die < 0
-		|| data->rules.microsec_to_eat < 0
-		|| data->rules.microsec_to_sleep < 0)
+		|| data->rules.mcsec_to_die < 0
+		|| data->rules.mcsec_to_eat < 0
+		|| data->rules.mcsec_to_sleep < 0)
 		ph_exit(ERR_WRONG_INPUT, NULL);
 	data->common_data.philos_ate_enough = 0;
 	data->common_data.someone_died = false;

@@ -6,7 +6,7 @@
 /*   By: maxmakagonov <maxmakagonov@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 10:47:15 by mmakagon          #+#    #+#             */
-/*   Updated: 2024/01/15 18:44:49 by maxmakagono      ###   ########.fr       */
+/*   Updated: 2024/01/16 10:52:53 by maxmakagono      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ long long	ph_atoll(const char *str)
 	minus = 0;
 	res = 0;
 	if (!str)
-		return (INT_MAX);
+		return (INT_MAX - 1);
 	while (is_space(str[i]) && str[i] != '\0')
 		i++;
 	if (str[i] == '-')
