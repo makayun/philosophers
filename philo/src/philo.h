@@ -6,7 +6,7 @@
 /*   By: maxmakagonov <maxmakagonov@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 15:14:34 by mmakagon          #+#    #+#             */
-/*   Updated: 2024/01/16 14:47:58 by maxmakagono      ###   ########.fr       */
+/*   Updated: 2024/01/17 13:40:07 by maxmakagono      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,18 +20,20 @@
 # define ATE_ENOUGH 4
 # define TAKING_FORK 5
 
+# define ALL_FINE 6
+# define ERROR 7
+# define ERR_WRONG_INPUT 8
+# define ERR_FORKS_INIT_FAILED 9
+# define ERR_PHILOS_INIT_FAILED 10
+# define TAKEN 11
+# define NOT_TAKEN	12
+# define STOP 42
+
 # define STR_DEAD "died\n"
 # define STR_EATING "is eating\n"
 # define STR_SLEEPING "is sleeping\n"
 # define STR_THINKING "is thinking\n"
 # define STR_FORK "has taken a fork\n"
-
-# define ALL_FINE 0
-# define ERROR 1
-# define ERR_WRONG_INPUT 2
-# define ERR_FORKS_INIT_FAILED 3
-# define ERR_PHILOS_INIT_FAILED 4
-# define STOP 42
 
 # include <string.h>
 # include <stdio.h>
@@ -45,7 +47,7 @@
 typedef struct s_fork {
 	int				id;
 	pthread_mutex_t	mutex;
-	bool			is_taken;
+	int				is_taken;
 }				t_fork;
 
 typedef struct s_rules {

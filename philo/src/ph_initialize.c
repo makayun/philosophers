@@ -6,7 +6,7 @@
 /*   By: maxmakagonov <maxmakagonov@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 10:27:59 by mmakagon          #+#    #+#             */
-/*   Updated: 2024/01/16 14:49:08 by maxmakagono      ###   ########.fr       */
+/*   Updated: 2024/01/17 13:38:11 by maxmakagono      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	ph_initialize_forks(t_data *data)
 	while (--i >= 0)
 	{
 		data->forks[i].id = i;
-		data->forks[i].is_taken = false;
+		data->forks[i].is_taken = NOT_TAKEN;
 		if (pthread_mutex_init(&data->forks[i].mutex, NULL))
 			ph_exit(ERR_FORKS_INIT_FAILED, NULL);
 	}
