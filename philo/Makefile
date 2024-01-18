@@ -6,6 +6,7 @@ RM = @rm -rf
 
 
 FILES = ph_atoll \
+		ph_fork \
 		ph_initialize \
 		ph_process \
 		ph_utils \

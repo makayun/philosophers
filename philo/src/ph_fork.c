@@ -20,11 +20,11 @@ int	ph_fork_take(t_philosopher *philo, t_fork *fork)
 			fork->is_taken = true;
 			pthread_mutex_unlock(&philo->common_data->fork_check);
 			pthread_mutex_lock(&fork->mutex);
-			ph_state_change(philo, TAKING_FORK);
-			return (ALL_FINE);
+			if (ph_state_change(philo, TAKING_FORK) != STOP)
+				return (ALL_FINE);
 		}
 	}
-	return (DEAD);
+	return (ERROR);
 }
 
 void	ph_fork_put(t_philosopher *philo, t_fork *fork)

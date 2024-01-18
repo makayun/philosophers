@@ -6,7 +6,7 @@
 /*   By: maxmakagonov <maxmakagonov@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 15:14:34 by mmakagon          #+#    #+#             */
-/*   Updated: 2024/01/18 13:07:46 by maxmakagono      ###   ########.fr       */
+/*   Updated: 2024/01/18 13:57:03 by maxmakagono      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,9 @@ void		ph_initialize(char **argv, t_data *data);
 
 // philo process
 void		*ph_process(void *arg);
+int			ph_eat(t_philosopher *philo);
+int			ph_state_change(t_philosopher *philo, int new_state);
+void		ph_die(long long mcsec_current, t_philosopher *philo);
 
 // forks
 int		ph_fork_take(t_philosopher *philo, t_fork *fork);

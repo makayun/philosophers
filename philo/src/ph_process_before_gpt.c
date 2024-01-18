@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ph_process.c                                       :+:      :+:    :+:   */
+/*   ph_process_before_gpt.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: maxmakagonov <maxmakagonov@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 14:28:54 by mmakagon          #+#    #+#             */
-/*   Updated: 2024/01/18 13:56:47 by maxmakagono      ###   ########.fr       */
+/*   Updated: 2024/01/18 13:53:02 by maxmakagono      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,21 +48,8 @@ int	ph_state_change(t_philosopher *philo, int new_state)
 }
 
 
-int	ph_eat(t_philosopher *philo)
+int	ph_eat(t_philosopher *philo, t_fork *first_fork, t_fork *second_fork)
 {
-	t_fork *first_fork;
-	t_fork *second_fork;
-
-	if (philo->id % 2 == 0)
-	{
-		first_fork = philo->left_fork;
-		second_fork = philo->right_fork;
-	}
-	else
-	{
-		first_fork = philo->right_fork;
-		second_fork = philo->left_fork;
-	}
 	if (ph_fork_take(philo, first_fork) != ALL_FINE)
 		return (STOP);
 	if (ph_fork_take(philo, second_fork) != ALL_FINE)
@@ -89,8 +76,12 @@ void	*ph_process(void *arg)
 	{
 		if (ph_state_change(philo, THINKING) == STOP)
 			return (0);
-    	if (ph_eat(philo) == STOP)
-	    	return (0);
+        if (philo->id % 2 == 0)
+    		if (ph_eat(philo, philo->left_fork, philo->right_fork) == STOP)
+	    		return (0);
+        else
+            if (ph_eat(philo, philo->right_fork, philo->left_fork) == STOP)
+	    		return (0);
 		if (++philo->times_ate >= philo->rules.times_must_eat)
 			if (ph_state_change(philo, ATE_ENOUGH) == STOP)
 				return (0);
