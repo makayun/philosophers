@@ -6,7 +6,7 @@
 /*   By: maxmakagonov <maxmakagonov@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 10:27:59 by mmakagon          #+#    #+#             */
-/*   Updated: 2024/01/17 13:38:11 by maxmakagono      ###   ########.fr       */
+/*   Updated: 2024/01/18 12:40:50 by maxmakagono      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,8 @@ void	ph_initialize_rules(char **argv, t_data *data)
 		ph_exit(ERR_WRONG_INPUT, NULL);
 	data->common_data.philos_ate_enough = 0;
 	data->common_data.someone_died = false;
-	if (pthread_mutex_init(&data->common_data.state_change, NULL))
+	if ((pthread_mutex_init(&data->common_data.state_change, NULL))
+		|| (pthread_mutex_init(&data->common_data.fork_check, NULL)))
 		ph_exit(ERROR, NULL);
 }
 

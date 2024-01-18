@@ -6,27 +6,28 @@
 /*   By: maxmakagonov <maxmakagonov@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 15:14:34 by mmakagon          #+#    #+#             */
-/*   Updated: 2024/01/17 13:40:07 by maxmakagono      ###   ########.fr       */
+/*   Updated: 2024/01/18 13:07:46 by maxmakagono      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILO_H
 # define PHILO_H
 
-# define DEAD 0
+# define DEAD -1
+# define ALL_FINE 0
 # define EATING 1
 # define SLEEPING 2
 # define THINKING 3
-# define ATE_ENOUGH 4
-# define TAKING_FORK 5
+# define HUNGRY 4
+# define ATE_ENOUGH 5
+# define TAKING_FORK 6
+# define TAKEN 7
+# define NOT_TAKEN	8
 
-# define ALL_FINE 6
-# define ERROR 7
-# define ERR_WRONG_INPUT 8
-# define ERR_FORKS_INIT_FAILED 9
-# define ERR_PHILOS_INIT_FAILED 10
-# define TAKEN 11
-# define NOT_TAKEN	12
+# define ERROR 9
+# define ERR_WRONG_INPUT 10
+# define ERR_FORKS_INIT_FAILED 11
+# define ERR_PHILOS_INIT_FAILED 12
 # define STOP 42
 
 # define STR_DEAD "died\n"
@@ -61,6 +62,7 @@ typedef struct s_rules {
 
 typedef struct s_common {
 	pthread_mutex_t	state_change;
+	pthread_mutex_t	fork_check;
 	int				philos_ate_enough;
 	bool			someone_died;
 }				t_common;
@@ -70,6 +72,7 @@ typedef struct s_philsopher {
 	int				state;
 	int				times_ate;
 	long long		last_meal;
+	long long		next_meal_before;
 	t_fork			*left_fork;
 	t_fork			*right_fork;
 	t_rules			rules;
@@ -84,11 +87,17 @@ typedef struct s_data {
 	t_common		common_data;
 }					t_data;
 
+typedef int (*func)(t_philosopher *philo); 
+
 // initialize
 void		ph_initialize(char **argv, t_data *data);
 
 // philo process
 void		*ph_process(void *arg);
+
+// forks
+int		ph_fork_take(t_philosopher *philo, t_fork *fork);
+void	ph_fork_put(t_philosopher *philo, t_fork *fork);
 
 // atoi
 long long	ph_atoll(const char *str);
