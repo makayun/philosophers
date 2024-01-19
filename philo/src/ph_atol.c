@@ -6,7 +6,7 @@
 /*   By: maxmakagonov <maxmakagonov@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 10:47:15 by mmakagon          #+#    #+#             */
-/*   Updated: 2024/01/17 13:32:14 by maxmakagono      ###   ########.fr       */
+/*   Updated: 2024/01/19 14:54:41 by maxmakagono      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static int	is_number(char c)
 		return (0);
 }
 
-long long	ph_atoll(const char *str)
+long	ph_atol(const char *str)
 {
 	int	i;
 	int	minus;

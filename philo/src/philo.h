@@ -6,7 +6,7 @@
 /*   By: maxmakagonov <maxmakagonov@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 15:14:34 by mmakagon          #+#    #+#             */
-/*   Updated: 2024/01/18 13:57:03 by maxmakagono      ###   ########.fr       */
+/*   Updated: 2024/01/19 14:54:37 by maxmakagono      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,16 +53,15 @@ typedef struct s_fork {
 
 typedef struct s_rules {
 	int				philos_total;
-	long long		mcsec_to_die;
-	long long		mcsec_to_eat;
-	long long		mcsec_to_sleep;
-	long long		mcsec_start;
+	long			mcsec_to_die;
+	long			mcsec_to_eat;
+	long			mcsec_to_sleep;
+	long			mcsec_start;
 	int				times_must_eat;
 }				t_rules;
 
 typedef struct s_common {
 	pthread_mutex_t	state_change;
-	pthread_mutex_t	fork_check;
 	int				philos_ate_enough;
 	bool			someone_died;
 }				t_common;
@@ -71,8 +70,9 @@ typedef struct s_philsopher {
 	int				id;
 	int				state;
 	int				times_ate;
-	long long		last_meal;
-	long long		next_meal_before;
+	long			last_meal;
+	long			next_meal_before;
+	long			mcsec_current;
 	t_fork			*left_fork;
 	t_fork			*right_fork;
 	t_rules			rules;
@@ -87,27 +87,25 @@ typedef struct s_data {
 	t_common		common_data;
 }					t_data;
 
-typedef int (*func)(t_philosopher *philo); 
-
 // initialize
 void		ph_initialize(char **argv, t_data *data);
 
 // philo process
 void		*ph_process(void *arg);
-int			ph_eat(t_philosopher *philo);
+int			ph_eat(t_philosopher *philo, t_fork *first_fork, t_fork *second_fork);
 int			ph_state_change(t_philosopher *philo, int new_state);
-void		ph_die(long long mcsec_current, t_philosopher *philo);
+void		ph_die(long mcsec_current, t_philosopher *philo);
 
 // forks
-int		ph_fork_take(t_philosopher *philo, t_fork *fork);
-void	ph_fork_put(t_philosopher *philo, t_fork *fork);
+void		ph_fork_assign(t_philosopher *philo, t_fork *first_fork, t_fork *second_fork);
+int			ph_fork_take(t_philosopher *philo, t_fork *fork);
+void		ph_fork_put(t_fork *fork);
 
 // atoi
-long long	ph_atoll(const char *str);
+long		ph_atol(const char *str);
 
 // utils
-void		ph_get_current_mcsec(long long *mcsec_current);
-long long 	ph_timeval_to_mcsec(struct timeval t);
+long		ph_get_current_mcsec(long *mcsec_current);
 void		ph_exit(int code, t_data *data);
 
 #endif

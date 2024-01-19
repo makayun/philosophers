@@ -6,7 +6,7 @@
 /*   By: maxmakagonov <maxmakagonov@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 10:27:59 by mmakagon          #+#    #+#             */
-/*   Updated: 2024/01/18 12:40:50 by maxmakagono      ###   ########.fr       */
+/*   Updated: 2024/01/19 14:54:27 by maxmakagono      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,11 +52,11 @@ void	ph_initialize_forks(t_data *data)
 
 void	ph_initialize_rules(char **argv, t_data *data)
 {
-	data->rules.philos_total = ph_atoll(argv[1]);
-	data->rules.mcsec_to_die = ph_atoll(argv[2]) * 1000;
-	data->rules.mcsec_to_eat = ph_atoll(argv[3]) * 1000;
-	data->rules.mcsec_to_sleep = ph_atoll(argv[4]) * 1000;
-	data->rules.times_must_eat = (int)ph_atoll(argv[5]);
+	data->rules.philos_total = ph_atol(argv[1]);
+	data->rules.mcsec_to_die = ph_atol(argv[2]) * 1000;
+	data->rules.mcsec_to_eat = ph_atol(argv[3]) * 1000;
+	data->rules.mcsec_to_sleep = ph_atol(argv[4]) * 1000;
+	data->rules.times_must_eat = (int)ph_atol(argv[5]);
 	if (data->rules.philos_total < 1 || data->rules.philos_total > 200
 		|| data->rules.mcsec_to_die < 0
 		|| data->rules.mcsec_to_eat < 0
@@ -64,8 +64,7 @@ void	ph_initialize_rules(char **argv, t_data *data)
 		ph_exit(ERR_WRONG_INPUT, NULL);
 	data->common_data.philos_ate_enough = 0;
 	data->common_data.someone_died = false;
-	if ((pthread_mutex_init(&data->common_data.state_change, NULL))
-		|| (pthread_mutex_init(&data->common_data.fork_check, NULL)))
+	if (pthread_mutex_init(&data->common_data.state_change, NULL))
 		ph_exit(ERROR, NULL);
 }
 

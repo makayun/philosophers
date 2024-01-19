@@ -1,11 +1,11 @@
 NAME = philo
 CC = @clang
-SANITIZE_FLAG = -fsanitize=thread
-CFLAGS = -Wall -Wextra -Werror -g $(SANITIZE_FLAG)
+SANITIZE_FLAG = -g -fsanitize=thread
+CFLAGS = -Wall -Wextra -Werror
 RM = @rm -rf
 
 
-FILES = ph_atoll \
+FILES = ph_atol \
 		ph_fork \
 		ph_initialize \
 		ph_process \

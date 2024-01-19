@@ -6,23 +6,19 @@
 /*   By: maxmakagonov <maxmakagonov@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 10:37:14 by mmakagon          #+#    #+#             */
-/*   Updated: 2024/01/16 13:00:26 by maxmakagono      ###   ########.fr       */
+/*   Updated: 2024/01/19 12:03:10 by maxmakagono      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-long long ph_timeval_to_mcsec(struct timeval t)
+long ph_get_current_mcsec(long *mcsec_current)
 {
-	return (t.tv_sec * 1000000 + t.tv_usec);
-}
+	struct timeval t;
 
-void ph_get_current_mcsec(long long *mcsec_current)
-{
-	struct timeval tv;
-
-	gettimeofday(&tv, NULL);
-	*mcsec_current = ph_timeval_to_mcsec(tv);
+	gettimeofday(&t, NULL);
+	*mcsec_current = t.tv_sec * 1000000 + t.tv_usec;
+	return (*mcsec_current);
 }
 
 void	ph_exit(int code, t_data *data)
