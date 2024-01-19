@@ -2,17 +2,15 @@
 
 int	ph_fork_take(t_philosopher *philo, t_fork *fork)
 {
-	long mcsec_current;
-
 	while (philo->state != DEAD)
 	{
-		ph_get_current_mcsec(&mcsec_current);
+		ph_get_current_mcsec(&philo->mcsec_current);
 		pthread_mutex_lock(&fork->mutex);
 		if (fork->is_taken == true)
 		{
 			pthread_mutex_unlock(&fork->mutex);
-			if(mcsec_current >= philo->next_meal_before)
-				return (ph_die(mcsec_current, philo), DEAD);
+			if(philo->mcsec_current >= philo->next_meal_before)
+				return (ph_die(philo->mcsec_current, philo), DEAD);
 			usleep(50);
 		}
 		else

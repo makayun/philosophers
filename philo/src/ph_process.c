@@ -6,7 +6,7 @@
 /*   By: maxmakagonov <maxmakagonov@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 14:28:54 by mmakagon          #+#    #+#             */
-/*   Updated: 2024/01/19 14:44:29 by maxmakagono      ###   ########.fr       */
+/*   Updated: 2024/01/19 15:02:17 by maxmakagono      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,17 +69,13 @@ int	ph_eat(t_philosopher *philo, t_fork *first_fork, t_fork *second_fork)
 void	*ph_process(void *arg)
 {
 	t_philosopher	*philo;
-	int				even_or_not;
 
 	philo = (t_philosopher *)arg;
-	philo->last_meal = philo->rules.mcsec_start;
-	philo->next_meal_before = philo->last_meal + philo->rules.mcsec_to_die;
-	even_or_not = philo->id % 2;
 	while (philo->state != DEAD)
 	{
 		if (ph_state_change(philo, THINKING) == STOP)
 			return (NULL);
-		if (even_or_not)
+		if (philo->id % 2 == 0)
 		{
 			usleep(1000);
     		if (ph_eat(philo, philo->left_fork, philo->right_fork) == STOP)

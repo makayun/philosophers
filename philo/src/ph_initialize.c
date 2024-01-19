@@ -6,7 +6,7 @@
 /*   By: maxmakagonov <maxmakagonov@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 10:27:59 by mmakagon          #+#    #+#             */
-/*   Updated: 2024/01/19 14:54:27 by maxmakagono      ###   ########.fr       */
+/*   Updated: 2024/01/19 15:00:43 by maxmakagono      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ void	ph_initialize_philos(t_data *data)
 		data->philos[i].times_ate = 0;
 		data->philos[i].rules = data->rules;
 		data->philos[i].common_data = &data->common_data;
+		data->philos[i].last_meal = data->rules.mcsec_start;
+		data->philos[i].next_meal_before = data->rules.mcsec_start + data->rules.mcsec_to_die;
 		if(pthread_create(&data->philos[i].thread, NULL,
 			ph_process, (void *)&data->philos[i]))
 			ph_exit(ERR_PHILOS_INIT_FAILED, data);
