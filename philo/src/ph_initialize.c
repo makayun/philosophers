@@ -6,7 +6,7 @@
 /*   By: maxmakagonov <maxmakagonov@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 10:27:59 by mmakagon          #+#    #+#             */
-/*   Updated: 2024/01/19 15:00:43 by maxmakagono      ###   ########.fr       */
+/*   Updated: 2024/01/21 21:47:32 by maxmakagono      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,6 @@ void	ph_initialize_philos(t_data *data)
 	while (--i >= 0)
 	{
 		data->philos[i].id = i;
-		data->philos[i].state = THINKING;
-		data->philos[i].last_meal = data->rules.mcsec_start;
 		data->philos[i].left_fork = &data->forks[i];
 		data->philos[i].right_fork = &data->forks[(i + 1) % total];
 		data->philos[i].times_ate = 0;
@@ -45,8 +43,7 @@ void	ph_initialize_forks(t_data *data)
 	i = data->rules.philos_total;
 	while (--i >= 0)
 	{
-		data->forks[i].id = i;
-		data->forks[i].is_taken = NOT_TAKEN;
+		data->forks[i].is_taken = false;
 		if (pthread_mutex_init(&data->forks[i].mutex, NULL))
 			ph_exit(ERR_FORKS_INIT_FAILED, NULL);
 	}

@@ -1,7 +1,8 @@
 NAME = philo
 CC = @clang
-SANITIZE_FLAG = -g -fsanitize=thread
-CFLAGS = -Wall -Wextra -Werror
+THREAD_FLAG = -g -fsanitize=thread
+ADDRESS_FLAG = -g -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror 
 RM = @rm -rf
 
 
@@ -23,6 +24,10 @@ $(OBJS_DIR)%.o: $(SRCS_DIR)%.c
 	$(CC) $(CFLAGS) -c -o $@ $<
 
 all: $(NAME)
+
+thread:	$(SRCS_DIR)philo.h $(OBJS)
+	$(CC) $(CFLAGS) $(THREAD_FLAG) -o $(NAME) $(OBJS)
+	@echo "philo compiled"
 
 $(NAME): $(SRCS_DIR)philo.h $(OBJS)
 	$(CC) $(CFLAGS) -o $(NAME) $(OBJS)

@@ -6,28 +6,26 @@
 /*   By: maxmakagonov <maxmakagonov@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 15:14:34 by mmakagon          #+#    #+#             */
-/*   Updated: 2024/01/19 14:54:37 by maxmakagono      ###   ########.fr       */
+/*   Updated: 2024/01/21 21:47:49 by maxmakagono      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILO_H
 # define PHILO_H
 
-# define DEAD -1
-# define ALL_FINE 0
-# define EATING 1
-# define SLEEPING 2
-# define THINKING 3
-# define HUNGRY 4
-# define ATE_ENOUGH 5
-# define TAKING_FORK 6
-# define TAKEN 7
-# define NOT_TAKEN	8
+# define DEAD 0
+# define ALL_FINE 1
+# define EATING 2
+# define SLEEPING 3
+# define THINKING 4
+# define HUNGRY 5
+# define ATE_ENOUGH 6
+# define TAKING_FORK 7
 
-# define ERROR 9
-# define ERR_WRONG_INPUT 10
-# define ERR_FORKS_INIT_FAILED 11
-# define ERR_PHILOS_INIT_FAILED 12
+# define ERROR 8
+# define ERR_WRONG_INPUT 9
+# define ERR_FORKS_INIT_FAILED 10
+# define ERR_PHILOS_INIT_FAILED 11
 # define STOP 42
 
 # define STR_DEAD "died\n"
@@ -46,9 +44,8 @@
 # include <limits.h>
 
 typedef struct s_fork {
-	int				id;
 	pthread_mutex_t	mutex;
-	int				is_taken;
+	bool			is_taken;
 }				t_fork;
 
 typedef struct s_rules {
@@ -68,7 +65,6 @@ typedef struct s_common {
 
 typedef struct s_philsopher {
 	int				id;
-	int				state;
 	int				times_ate;
 	long			last_meal;
 	long			next_meal_before;
@@ -105,6 +101,7 @@ void		ph_fork_put(t_fork *fork);
 long		ph_atol(const char *str);
 
 // utils
+void		ph_print_message(t_philosopher *philo, char *str);
 long		ph_get_current_mcsec(long *mcsec_current);
 void		ph_exit(int code, t_data *data);
 

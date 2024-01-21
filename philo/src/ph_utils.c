@@ -6,11 +6,16 @@
 /*   By: maxmakagonov <maxmakagonov@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 10:37:14 by mmakagon          #+#    #+#             */
-/*   Updated: 2024/01/19 12:03:10 by maxmakagono      ###   ########.fr       */
+/*   Updated: 2024/01/21 23:23:38 by maxmakagono      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+void ph_print_message(t_philosopher *philo, char *str)
+{
+	printf ("%ld %d %s", (ph_get_current_mcsec(&philo->mcsec_current) - philo->rules.mcsec_start) / 1000, philo->id, str);
+}
 
 long ph_get_current_mcsec(long *mcsec_current)
 {
