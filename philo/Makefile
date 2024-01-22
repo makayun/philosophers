@@ -27,7 +27,11 @@ all: $(NAME)
 
 thread:	$(SRCS_DIR)philo.h $(OBJS)
 	$(CC) $(CFLAGS) $(THREAD_FLAG) -o $(NAME) $(OBJS)
-	@echo "philo compiled"
+	@echo "philo compiled with -fsanitize=thread flag"
+
+address: $(SRCS_DIR)philo.h $(OBJS)
+	$(CC) $(CFLAGS) $(ADDRESS_FLAG) -o $(NAME) $(OBJS)
+	@echo "philo compiled with -fsanitize=address flag"
 
 $(NAME): $(SRCS_DIR)philo.h $(OBJS)
 	$(CC) $(CFLAGS) -o $(NAME) $(OBJS)

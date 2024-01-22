@@ -6,11 +6,17 @@
 /*   By: maxmakagonov <maxmakagonov@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 10:37:14 by mmakagon          #+#    #+#             */
-/*   Updated: 2024/01/21 23:23:38 by maxmakagono      ###   ########.fr       */
+/*   Updated: 2024/01/22 23:26:43 by maxmakagono      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+void ph_wait_until(t_philosopher *philo, long timestamp)
+{
+	while (ph_get_current_mcsec(&philo->mcsec_current) < timestamp)
+		usleep(philo->rules.philos_total * 10);
+}
 
 void ph_print_message(t_philosopher *philo, char *str)
 {

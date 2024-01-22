@@ -6,7 +6,7 @@
 /*   By: maxmakagonov <maxmakagonov@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 15:14:34 by mmakagon          #+#    #+#             */
-/*   Updated: 2024/01/21 21:47:49 by maxmakagono      ###   ########.fr       */
+/*   Updated: 2024/01/22 16:40:04 by maxmakagono      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,6 @@ int			ph_state_change(t_philosopher *philo, int new_state);
 void		ph_die(long mcsec_current, t_philosopher *philo);
 
 // forks
-void		ph_fork_assign(t_philosopher *philo, t_fork *first_fork, t_fork *second_fork);
 int			ph_fork_take(t_philosopher *philo, t_fork *fork);
 void		ph_fork_put(t_fork *fork);
 
@@ -101,6 +100,7 @@ void		ph_fork_put(t_fork *fork);
 long		ph_atol(const char *str);
 
 // utils
+void		ph_wait_until(t_philosopher *philo, long timestamp);
 void		ph_print_message(t_philosopher *philo, char *str);
 long		ph_get_current_mcsec(long *mcsec_current);
 void		ph_exit(int code, t_data *data);

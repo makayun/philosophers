@@ -8,7 +8,7 @@ int	ph_fork_take(t_philosopher *philo, t_fork *fork)
 		if (fork->is_taken == true)
 		{
 			pthread_mutex_unlock(&fork->mutex);
-			usleep(50);
+			usleep(100);
 		}
 		else
 		{
@@ -17,7 +17,7 @@ int	ph_fork_take(t_philosopher *philo, t_fork *fork)
 			if (ph_state_change(philo, TAKING_FORK) != STOP)
 				return (ALL_FINE);
 			else
-				return (ATE_ENOUGH);
+				return (STOP);
 		}
 	}
 	return (ph_die(philo->mcsec_current, philo), DEAD);
