@@ -6,7 +6,7 @@
 /*   By: maxmakagonov <maxmakagonov@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 14:28:54 by mmakagon          #+#    #+#             */
-/*   Updated: 2024/01/22 23:25:10 by maxmakagono      ###   ########.fr       */
+/*   Updated: 2024/01/23 09:41:40 by maxmakagono      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,10 @@ int	ph_state_change(t_philosopher *philo, int new_state)
 }
 
 
-int	ph_eat(t_philosopher *philo, t_fork *first_fork, t_fork *second_fork)
+int	ph_eat(t_philosopher *philo, t_fork *first_fork, t_fork *second_fork, long offset)
 {
-	ph_wait_until(philo, philo->last_meal + (philo->rules.philos_total - philo->id) * philo->rules.philos_total);
+	ph_wait_until(philo, philo->mcsec_current + offset);
+	// usleep(offset);
 	if (ph_fork_take(philo, first_fork) != ALL_FINE)
 		return (STOP);
 	if (ph_fork_take(philo, second_fork) != ALL_FINE)
@@ -67,18 +68,21 @@ int	ph_eat(t_philosopher *philo, t_fork *first_fork, t_fork *second_fork)
 void	*ph_process(void *arg)
 {
 	t_philosopher	*philo;
+	long			offset;
 
 	philo = (t_philosopher *)arg;
+	// offset = (philo->rules.philos_total - philo->id) * (philo->rules.philos_total + (philo->id % 2) * 2);
+	offset = (philo->rules.philos_total - philo->id) * ((philo->id % 2) * 200);
 	while (ph_state_change(philo, THINKING) != STOP)
 	{
 		if (philo->id % 2 != 0)
 		{
 			ph_wait_until(philo, philo->mcsec_current + philo->rules.philos_total * 200);
-    		if (ph_eat(philo, philo->left_fork, philo->right_fork) == STOP)
+    		if (ph_eat(philo, philo->left_fork, philo->right_fork, offset) == STOP)
 				return (NULL);
 		}
 		else
-			if (ph_eat(philo, philo->right_fork, philo->left_fork) == STOP)
+			if (ph_eat(philo, philo->right_fork, philo->left_fork, offset) == STOP)
 				return (NULL);
 		if (ph_state_change(philo, SLEEPING) == STOP)
 			return (NULL);
