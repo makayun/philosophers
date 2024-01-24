@@ -1,8 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ph_fork.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mmakagon <mmakagon@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/01/24 23:01:27 by mmakagon          #+#    #+#             */
+/*   Updated: 2024/01/24 23:06:50 by mmakagon         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo.h"
 
 int	ph_fork_take(t_philosopher *philo, t_fork *fork)
 {
-	while (ph_get_current_mcsec(&philo->mcsec_current) < philo->next_meal_before)
+	while (ph_get_current(&philo->current) < philo->next_meal_before)
 	{
 		pthread_mutex_lock(&fork->mutex);
 		if (fork->is_taken == true)
@@ -20,7 +32,7 @@ int	ph_fork_take(t_philosopher *philo, t_fork *fork)
 				return (STOP);
 		}
 	}
-	return (ph_die(philo->mcsec_current, philo), DEAD);
+	return (ph_die(philo->current, philo), DEAD);
 }
 
 void	ph_fork_put(t_fork *fork)

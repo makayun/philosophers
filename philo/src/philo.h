@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maxmakagonov <maxmakagonov@student.42.f    +#+  +:+       +#+        */
+/*   By: mmakagon <mmakagon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 15:14:34 by mmakagon          #+#    #+#             */
-/*   Updated: 2024/01/24 16:53:05 by maxmakagono      ###   ########.fr       */
+/*   Updated: 2024/01/24 23:10:15 by mmakagon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,66 +43,71 @@
 # include <stdbool.h>
 # include <limits.h>
 
-typedef struct s_fork {
+typedef struct s_fork
+{
 	pthread_mutex_t	mutex;
 	bool			is_taken;
 }				t_fork;
 
-typedef struct s_rules {
+typedef struct s_rules
+{
 	int				philos_total;
-	long			mcsec_to_die;
-	long			mcsec_to_eat;
-	long			mcsec_to_sleep;
-	long			mcsec_start;
+	long			to_die;
+	long			to_eat;
+	long			to_sleep;
+	long			start;
 	int				times_must_eat;
 }				t_rules;
 
-typedef struct s_common {
+typedef struct s_common
+{
 	pthread_mutex_t	state_change;
 	int				philos_ate_enough;
 	bool			someone_died;
 }				t_common;
 
-typedef struct s_philsopher {
+typedef struct s_philsopher
+{
 	int				id;
 	int				times_ate;
 	long			last_meal;
 	long			next_meal_before;
-	long			mcsec_current;
+	long			current;
 	t_fork			*left_fork;
 	t_fork			*right_fork;
 	t_rules			rules;
-	t_common		*common_data;
+	t_common		*common;
 	pthread_t		thread;
 }				t_philosopher;
 
-typedef struct s_data {
+typedef struct s_data
+{
 	t_fork			forks[200];
 	t_philosopher	philos[200];
 	t_rules			rules;
-	t_common		common_data;
+	t_common		common;
 }					t_data;
 
 // initialize
-void		ph_initialize(char **argv, t_data *data);
+void	ph_initialize(char **argv, t_data *data);
 
 // philo process
-void		*ph_process(void *arg);
-int			ph_eat(t_philosopher *philo, t_fork *first_fork, t_fork *second_fork);
-int			ph_state_change(t_philosopher *philo, int new_state);
-void		ph_die(long mcsec_current, t_philosopher *philo);
+void	*ph_process(void *arg);
+int		ph_eat(t_philosopher *philo, t_fork *first_fork, t_fork *second_fork);
+int		ph_state_change(t_philosopher *philo, int new_state);
+void	ph_die(long current, t_philosopher *philo);
 
 // forks
-int			ph_fork_take(t_philosopher *philo, t_fork *fork);
-void		ph_fork_put(t_fork *fork);
+int		ph_fork_take(t_philosopher *philo, t_fork *fork);
+void	ph_fork_put(t_fork *fork);
 
 // atoi
-long		ph_atol(const char *str);
+long	ph_atol(const char *str);
 
 // utils
-void		ph_wait_until(t_philosopher *philo, long timestamp);
-void		ph_print_message(t_philosopher *philo, char *str);
-long		ph_get_current_mcsec(long *mcsec_current);
-void		ph_exit(int code, t_data *data);
+void	ph_wait(t_philosopher *philo, long timestamp);
+void	ph_print_message(t_philosopher *philo, char *str);
+long	ph_get_current(long *current);
+void	ph_exit(int code, t_data *data);
 
 #endif
