@@ -6,7 +6,7 @@
 /*   By: mmakagon <mmakagon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 14:28:54 by mmakagon          #+#    #+#             */
-/*   Updated: 2024/01/24 23:11:56 by mmakagon         ###   ########.fr       */
+/*   Updated: 2024/01/25 12:16:08 by mmakagon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,7 @@ void	ph_die(long current, t_philosopher *philo)
 
 int	ph_state_change(t_philosopher *philo, int new_state)
 {
-	if (ph_get_current(&philo->current) - philo->last_meal
-		>= philo->rules.to_die)
+	if (ph_get_current(&philo->current) >= philo->next_meal_before)
 		return (ph_die(philo->current, philo), STOP);
 	pthread_mutex_lock(&philo->common->state_change);
 	if (philo->common->philos_ate_enough >= philo->rules.philos_total
@@ -50,15 +49,18 @@ int	ph_state_change(t_philosopher *philo, int new_state)
 
 int	ph_eat(t_philosopher *philo, t_fork *first_fork, t_fork *second_fork)
 {
+	if (ph_get_current(&philo->current) >= philo->next_meal_before)
+		return (ph_die(philo->current, philo), STOP);
 	if (ph_fork_take(philo, first_fork) != ALL_FINE)
 		return (STOP);
 	if (ph_fork_take(philo, second_fork) != ALL_FINE)
 		return (STOP);
+	philo->last_meal = philo->current;
+	philo->next_meal_before = philo->last_meal + philo->rules.to_eat + philo->rules.to_die;
 	if (ph_state_change(philo, EATING) == STOP)
 		return (STOP);
-	philo->last_meal = ph_get_current(&philo->current) + philo->rules.to_eat;
-	philo->next_meal_before = philo->last_meal + philo->rules.to_die;
-	ph_wait(philo, philo->last_meal);
+	if (ph_wait(philo, philo->last_meal + philo->rules.to_eat) == DEAD)
+		return (ph_die(philo->current, philo), STOP);
 	ph_fork_put(first_fork);
 	ph_fork_put(second_fork);
 	return (ALL_FINE);
@@ -67,14 +69,14 @@ int	ph_eat(t_philosopher *philo, t_fork *first_fork, t_fork *second_fork)
 void	*ph_process(void *arg)
 {
 	t_philosopher	*philo;
-	long			offset;
 
 	philo = (t_philosopher *)arg;
-	offset = (philo->rules.philos_total - philo->id) * 100;
 	while (ph_state_change(philo, THINKING) != STOP)
 	{
-		ph_wait(philo, philo->rules.start + offset * philo->times_ate);
-		if (philo->rules.philos_total > 5 && philo->id % 2 != 0)
+		if (philo->rules.philos_total != 4)
+			if (ph_wait(philo, philo->current + philo->offset) == DEAD)
+				return (ph_die(philo->current, philo), NULL);
+		if (philo->id % 2 != 0)
 		{
 			ph_wait(philo, philo->current + philo->rules.philos_total * 100);
 			if (ph_eat(philo, philo->left_fork, philo->right_fork) == STOP)
@@ -88,7 +90,7 @@ void	*ph_process(void *arg)
 		if (++philo->times_ate >= philo->rules.times_must_eat)
 			if (ph_state_change(philo, ATE_ENOUGH) == STOP)
 				return (NULL);
-		ph_wait(philo, philo->last_meal + philo->rules.to_sleep);
+		ph_wait(philo, philo->last_meal + philo->rules.to_eat + philo->rules.to_sleep);
 	}
 	return (NULL);
 }

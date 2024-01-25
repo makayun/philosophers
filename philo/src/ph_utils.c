@@ -6,16 +6,21 @@
 /*   By: mmakagon <mmakagon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 10:37:14 by mmakagon          #+#    #+#             */
-/*   Updated: 2024/01/24 23:07:00 by mmakagon         ###   ########.fr       */
+/*   Updated: 2024/01/25 12:16:11 by mmakagon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	ph_wait(t_philosopher *philo, long timestamp)
+int	ph_wait(t_philosopher *philo, long timestamp)
 {
 	while (ph_get_current(&philo->current) < timestamp)
+	{
+		if (philo->current >= philo->next_meal_before)
+			return (DEAD);
 		usleep(philo->rules.philos_total * 10);
+	}
+	return (ALL_FINE);
 }
 
 void	ph_print_message(t_philosopher *philo, char *str)

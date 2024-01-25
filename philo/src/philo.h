@@ -6,7 +6,7 @@
 /*   By: mmakagon <mmakagon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 15:14:34 by mmakagon          #+#    #+#             */
-/*   Updated: 2024/01/24 23:10:15 by mmakagon         ###   ########.fr       */
+/*   Updated: 2024/01/25 12:16:11 by mmakagon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ typedef struct s_philsopher
 	long			last_meal;
 	long			next_meal_before;
 	long			current;
+	long			offset;
 	t_fork			*left_fork;
 	t_fork			*right_fork;
 	t_rules			rules;
@@ -105,7 +106,7 @@ void	ph_fork_put(t_fork *fork);
 long	ph_atol(const char *str);
 
 // utils
-void	ph_wait(t_philosopher *philo, long timestamp);
+int		ph_wait(t_philosopher *philo, long timestamp);
 void	ph_print_message(t_philosopher *philo, char *str);
 long	ph_get_current(long *current);
 void	ph_exit(int code, t_data *data);

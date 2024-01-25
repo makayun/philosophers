@@ -6,7 +6,7 @@
 /*   By: mmakagon <mmakagon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 10:27:59 by mmakagon          #+#    #+#             */
-/*   Updated: 2024/01/24 23:09:56 by mmakagon         ###   ########.fr       */
+/*   Updated: 2024/01/25 12:16:12 by mmakagon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,14 @@ void	ph_initialize_philos(t_data *data)
 	ph_get_current(&data->rules.start);
 	while (--i >= 0)
 	{
-		data->philos[i].id = i;
+		data->philos[i].id = i + 1;
 		data->philos[i].left_fork = &data->forks[i];
 		data->philos[i].right_fork = &data->forks[(i + 1) % total];
 		data->philos[i].times_ate = 0;
 		data->philos[i].rules = data->rules;
 		data->philos[i].common = &data->common;
 		data->philos[i].last_meal = data->rules.start;
+		data->philos[i].offset = (data->rules.philos_total - i) * 100;
 		data->philos[i].next_meal_before = data->rules.start
 			+ data->rules.to_die;
 		if (pthread_create (&data->philos[i].thread, NULL,

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maxmakagonov <maxmakagonov@student.42.f    +#+  +:+       +#+        */
+/*   By: mmakagon <mmakagon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 15:14:17 by mmakagon          #+#    #+#             */
-/*   Updated: 2024/01/19 10:48:23 by maxmakagono      ###   ########.fr       */
+/*   Updated: 2024/01/25 12:16:09 by mmakagon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,5 +25,5 @@ int	main(int argc, char **argv)
 		pthread_join(data.philos[i].thread, NULL);
 	while (--i >= 0)
 		pthread_mutex_destroy(&data.forks[i].mutex);
-	pthread_mutex_destroy(&data.common_data.state_change);
+	pthread_mutex_destroy(&data.common.state_change);
 }

@@ -2,7 +2,7 @@ NAME = philo
 CC = @clang
 THREAD_FLAG = -g -fsanitize=thread
 ADDRESS_FLAG = -g -fsanitize=address
-CFLAGS = -Wall -Wextra -Werror 
+CFLAGS = -Wall -Wextra -Werror
 RM = @rm -rf
 
 
