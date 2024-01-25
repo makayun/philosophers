@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ph_utils.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmakagon <mmakagon@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maxmakagonov <maxmakagonov@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 10:37:14 by mmakagon          #+#    #+#             */
-/*   Updated: 2024/01/25 12:16:11 by mmakagon         ###   ########.fr       */
+/*   Updated: 2024/01/25 16:56:33 by maxmakagono      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,10 @@ int	ph_wait(t_philosopher *philo, long timestamp)
 	{
 		if (philo->current >= philo->next_meal_before)
 			return (DEAD);
-		usleep(philo->rules.philos_total * 10);
+		if (philo->rules.philos_total > 5)
+			usleep(philo->rules.philos_total * 10);
+		else
+			usleep(1000);
 	}
 	return (ALL_FINE);
 }
