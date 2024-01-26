@@ -6,7 +6,7 @@
 /*   By: maxmakagonov <maxmakagonov@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 10:37:14 by mmakagon          #+#    #+#             */
-/*   Updated: 2024/01/26 11:07:14 by maxmakagono      ###   ########.fr       */
+/*   Updated: 2024/01/26 11:24:43 by maxmakagono      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	ph_wait(t_philosopher *philo, long timestamp)
 	{
 		if (philo->current >= philo->next_meal_before)
 			return (DEAD);
-		usleep(philo->rules.philos_total * 50);
+		usleep(philo->rules.philos_total * 10);
 	}
 	return (ALL_FINE);
 }
