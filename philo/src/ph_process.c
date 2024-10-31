@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ph_process.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maxmakagonov <maxmakagonov@student.42.f    +#+  +:+       +#+        */
+/*   By: mmakagon <mmakagon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 14:28:54 by mmakagon          #+#    #+#             */
-/*   Updated: 2024/01/26 11:25:28 by maxmakagono      ###   ########.fr       */
+/*   Updated: 2024/01/26 11:56:22 by mmakagon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ int	ph_state_change(t_philosopher *philo, int new_state)
 	if (ph_get_current(&philo->current) >= philo->next_meal_before)
 		return (ph_die(philo->current, philo), STOP);
 	pthread_mutex_lock(&philo->common->state_change);
-	printf ("   %d %ld\n", philo->id, philo->offset);
 	if (philo->common->philos_ate_enough >= philo->rules.philos_total
 		|| philo->common->someone_died == true)
 		new_state = STOP;
@@ -50,9 +49,7 @@ int	ph_state_change(t_philosopher *philo, int new_state)
 
 int	ph_eat(t_philosopher *philo, t_fork *first_fork, t_fork *second_fork)
 {
-	// if (ph_get_current(&philo->current) >= philo->next_meal_before)
-	// 	return (ph_die(philo->current, philo), STOP);
-	if (ph_wait(philo, philo->last_meal + philo->rules.to_eat / 3) == DEAD)
+	if (ph_get_current(&philo->current) >= philo->next_meal_before)
 		return (ph_die(philo->current, philo), STOP);
 	if (ph_fork_take(philo, first_fork) != ALL_FINE)
 		return (STOP);
@@ -92,7 +89,8 @@ void	*ph_process(void *arg)
 		if (++philo->times_ate >= philo->rules.times_must_eat)
 			if (ph_state_change(philo, ATE_ENOUGH) == STOP)
 				return (NULL);
-		ph_wait(philo, philo->last_meal + philo->rules.to_eat + philo->rules.to_sleep);
+		ph_wait(philo,
+			philo->last_meal + philo->rules.to_eat + philo->rules.to_sleep);
 	}
 	return (NULL);
 }
